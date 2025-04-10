@@ -1,0 +1,23 @@
+{
+    "name": "aleksanm/excel2txt",
+    "description": "Extract text from MS Excel xlsx file using built in tool: /usr/bin/sscocnvert",
+    "require": {
+        "php": "^8.2",
+        "symfony/process": "^7.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Aleksanm\\Excel2txt\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "authors": [
+        {
+            "name": "Aleks Andrs",
+            "email": "aleksandrs.miska@gmail.com"
+        }
+    ]
+}
