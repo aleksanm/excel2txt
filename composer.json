@@ -2,8 +2,8 @@
     "name": "aleksanm/excel2txt",
     "description": "Extract text from MS Excel xlsx file using builtin tool: /usr/bin/ssconvert",
     "require": {
-        "php": "^8.2",
-        "symfony/process": "^7.2"
+        "php": "^8.4",
+        "symfony/process": "^8.1"
     },
     "license": "MIT",
     "autoload": {
