@@ -16,6 +16,12 @@ class Excel
 
     protected array $options = [];
 
+    /**
+     * Exporter used by text() when the options do not name one.
+     * "Text (configurable)": writes every sheet, see `ssconvert --list-exporters`.
+     */
+    public const DEFAULT_TEXT_EXPORTER = 'Gnumeric_stf:stf_assistant';
+
     public function __construct(?string $binPath = null)
     {
         $this->binPath = $binPath ?? '/usr/bin/ssconvert';
@@ -92,7 +98,12 @@ class Excel
     {
         $this->ensureExcelIsSet();
 
-        return $this->runProcess(array_merge([$this->binPath], $this->options, [$this->excel]));
+        // ssconvert refuses to run without an output target: send the export to stdout.
+        return $this->runProcess(array_merge(
+            [$this->binPath],
+            $this->withExportType($this->options),
+            [$this->excel, 'fd://1']
+        ));
     }
 
     public function doc(): string
@@ -103,6 +114,17 @@ class Excel
         $this->runProcess(array_merge([$this->binPath], $this->options, [$this->excel, $this->file]));
 
         return trim(file_get_contents($this->file), " \t\n\r\0\x0B\x0C");
+    }
+
+    protected function withExportType(array $options): array
+    {
+        foreach ($options as $option) {
+            if (str_starts_with($option, '--export-type') || str_starts_with($option, '-T')) {
+                return $options;
+            }
+        }
+
+        return array_merge(['--export-type='.self::DEFAULT_TEXT_EXPORTER], $options);
     }
 
     protected function ensureExcelIsSet(): void
